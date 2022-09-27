@@ -63,7 +63,7 @@ WHERE continent IS NOT NULL
 GROUP BY Location
 ORDER BY TotalDeathCount DESC
 
---GLOBAL NUMBERS
+--GLOBAL NUMBERS:
 SELECT date, SUM(new_cases) AS GlobalNewCases, 
 		SUM(CAST(new_deaths AS INT)) AS GlobalNewDeaths,
 		(SUM(CAST(new_deaths AS INT))/SUM(new_cases))*100 AS GlobalDeathPercentage
@@ -73,7 +73,8 @@ WHERE Continent IS NOT NULL
 GROUP BY date
 ORDER BY 1, 2
 
---GLOBAL NUMBERS: total cases and death percentage
+--GLOBAL NUMBERS: 
+--total cases and death percentage:
 SELECT SUM(new_cases) AS GlobalNewCases, 
 		SUM(CAST(new_deaths AS INT)) AS GlobalNewDeaths,
 		(SUM(CAST(new_deaths AS INT))/SUM(new_cases))*100 AS GlobalDeathPercentage
@@ -83,10 +84,12 @@ WHERE Continent IS NOT NULL
 --GROUP BY date
 ORDER BY 1, 2
 
---Lookin at Total Population vs Vaccinations
+--Joining the Covid_Vaccination and Covid_Death tables to find data
+
+--Lookin at Total Population vs Vaccinations:
 SELECT DEA.continent, DEA.location, DEA.date, DEA.population, 
 		VAC.new_vaccinations,
-		SUM(CAST(VAC.new_vaccinations AS INT)) OVER (PARTITION BY DEA.Location ORDER BY DEA.location, DEA.Date) AS RollingPeopleVaccinated,
+		SUM(CAST(VAC.new_vaccinations AS INT)) OVER (PARTITION BY DEA.Location ORDER BY DEA.location, DEA.Date) AS RollingPeopleVaccinated
 		--(RollingPeopleVaccinated/population)*100 ===> we cant use this column which we newly created. So, 
 FROM Portfolio_project..CovidDeaths DEA
 JOIN Portfolio_project..CovidVaccinations VAC 
